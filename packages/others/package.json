@@ -1,0 +1,16 @@
+{
+  "name": "others",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "peerDependencies": {
+    "@types/node": "^20.8.8",
+    "typescript": "^5.2.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
