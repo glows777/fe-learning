@@ -61,20 +61,3 @@ type Test = {
     timeout: (time: number, reason: Error, abc: { a: number, b: string, c?: boolean }, h: { h: boolean }) => void
 }
 
-const ee = new EventEmitter<Test>()
-
-ee.on('timeout', (time, reason, abc, h) => {
-    console.log(time, reason, abc.a, h.h)
-})
-
-ee.emit('timeout', 1000, new Error('123'), { a: 222, b: '123' }, { h: true })
-
-ee.on('success', (code, data) => {
-    console.log(code, data.a)
-})
-ee.on('error', (e) => {
-    console.log(e)
-})
-
-ee.emit('error', new Error('error'))
-ee.emit('success', 'code', { a: 2 })

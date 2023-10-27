@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ts": "ts-node --files"
+    "ts": "ts-node --files",
+    "test": "jest"
   },
   "peerDependencies": {
     "@types/node": "^20.8.8",
