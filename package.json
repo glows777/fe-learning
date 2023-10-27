@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "preinstall": "npx -y only-allow pnpm",
-    "ahooks:dev": "pnpm -C ./packages/ahooks-fake dev"
+    "ahooks": "pnpm -C ./packages/ahooks-fake dev",
+    "rxjs": "pnpm -C ./packages/react-rxjs-demo dev"
   },
   "keywords": [],
   "author": "",
