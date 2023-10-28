@@ -1,7 +1,7 @@
 import { isFunction } from '@/utils'
 import isDev from '@/utils/is-dev'
 import { useEffect } from 'react'
-import { useLatest } from '../use-latest'
+import { useLatest } from '../useLatest'
 
 export const useUnmount = (fn: () => void) => {
     if (isDev) {
