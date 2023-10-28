@@ -1,12 +1,10 @@
-import './App.css'
+import { useMount  } from './ahooks/use-mount'
 
 function App() {
-
+  useMount(() => console.log('hello, useMount'))
   return (
     <>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>ahooks-fake test</h1>
     </>
   )
 }
