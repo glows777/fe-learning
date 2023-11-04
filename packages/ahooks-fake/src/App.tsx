@@ -1,4 +1,4 @@
-import { useMount  } from './ahooks/useMount'
+import { useMount  } from '@/ahooks/useMount'
 
 function App() {
   useMount(() => console.log('hello, useMount'))

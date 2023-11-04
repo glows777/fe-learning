@@ -6,7 +6,7 @@ module.exports = {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
   "testMatch": [
-    "**/src/**/test/*.spec.ts"
+    "./**/src/**/test/*.spec.ts"
   ],
   transform: {
     // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
