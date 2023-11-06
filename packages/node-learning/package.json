@@ -5,14 +5,18 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cluster": "ts-node cluster",
+    "stream": "ts-node stream"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "ts-node": "^10.9.1"
+  },
+  "peerDependencies": {
     "@types/node": "^20.8.8",
-    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }
 }
