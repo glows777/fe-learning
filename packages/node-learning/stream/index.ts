@@ -10,4 +10,3 @@ const base64Transformer = new Transform({
 })
 
 process.stdin.pipe(base64Transformer).pipe(process.stdout)
-
