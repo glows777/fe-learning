@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { createClient } from 'redis'
 import 'dotenv/config'
 
 import { AppController } from './app.controller'
@@ -28,6 +29,18 @@ import { User } from './user/entities/user.entity'
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: 'REDIS_CLIENT',
+    async useFactory() {
+      const client = createClient({
+        socket: {
+          host: process.env.HOST,
+          port: Number(process.env.REDIS_PORT)
+        }
+      })
+      await client.connect()
+      return client
+    }
+  }],
 })
 export class AppModule {}
