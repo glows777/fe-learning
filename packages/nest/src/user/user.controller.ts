@@ -1,42 +1,52 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
-  Delete,
+  Controller, Get, Inject, Post, Res, UseGuards,Headers, ValidationPipe
 } from '@nestjs/common'
 import { UserService } from './user.service'
-import { CreateUserDto } from './dto/create-user.dto'
-import { UpdateUserDto } from './dto/update-user.dto'
+import { LoginDto } from './dto/login.dto'
+import { RegisterDto } from './dto/register.dto'
+import { Response } from 'express'
+import { JwtService } from '@nestjs/jwt'
+import { LoginGuard } from 'src/login.guard'
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto)
+  @Inject(JwtService)
+  private jwtService: JwtService
+
+  @Post('login')
+  async login(@Body(ValidationPipe) loginDto: LoginDto, @Res({ passthrough: true }) resp: Response) {
+    const user = await this.userService.findOne(loginDto)
+    if (user) {
+      const token = await this.jwtService.signAsync({
+        user: {
+          id: user.id,
+          username: user.name
+        }
+      })
+      resp.setHeader('token', token)
+      return 'login successfully'
+    } else {
+      return 'failed to login'
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll()
+  @Post('register')
+  register(@Body(ValidationPipe) registerDto: RegisterDto) {
+    return this.userService.create(registerDto)
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id)
+  @Get('a')
+  @UseGuards(LoginGuard)
+  a(@Headers('authorization') authorization) {
+    return `hello ${this.jwtService.verify(authorization.split(' ')[1]).user.username} from a`
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto)
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id)
+  @Get('b')
+  @UseGuards(LoginGuard)
+  b() {
+    return 'hello from b'
   }
 }
