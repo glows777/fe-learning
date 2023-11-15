@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { JwtModule } from '@nestjs/jwt'
 import { createClient } from 'redis'
 import 'dotenv/config'
 
@@ -7,11 +8,13 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { UserModule } from './user/user.module'
 import { User } from './user/entities/user.entity'
-import { JwtModule } from '@nestjs/jwt'
+import { Student } from './student/entities/student.entity'
+import { StudentModule } from './student/student.module'
 
 @Module({
   imports: [
     UserModule,
+    StudentModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.HOST,
@@ -21,7 +24,7 @@ import { JwtModule } from '@nestjs/jwt'
       database: process.env.DATABASE,
       synchronize: true,
       logging: true,
-      entities: [User],
+      entities: [User, Student],
       poolSize: 10,
       connectorPackage: 'mysql2',
       extra: {
@@ -34,7 +37,7 @@ import { JwtModule } from '@nestjs/jwt'
       signOptions: {
         expiresIn: '7d'
       }
-    })
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, {
