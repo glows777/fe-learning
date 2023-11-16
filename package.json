@@ -8,7 +8,8 @@
     "preinstall": "npx -y only-allow pnpm",
     "ahooks": "pnpm -C ./packages/ahooks-fake dev",
     "rxjs": "pnpm -C ./packages/react-rxjs-demo dev",
-    "slate": "pnpm -C ./packages/slate dev"
+    "slate": "pnpm -C ./packages/slate dev",
+    "yjs": "pnpm -C ./packages/yjs-quill dev"
   },
   "keywords": [],
   "author": "",
