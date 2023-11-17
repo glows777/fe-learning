@@ -4,7 +4,7 @@ import QuillCursors from 'quill-cursors'
 import * as Y from 'yjs'
 import { QuillBinding } from 'y-quill'
 import { WebrtcProvider } from 'y-webrtc'
-import { IndexeddbPersistence } from 'y-indexeddb'
+// import { IndexeddbPersistence } from 'y-indexeddb'
 
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -50,20 +50,17 @@ function App() {
     })
     ydoc.current = new Y.Doc()
     yText.current = ydoc.current.getText('quill')
-    provider.current = new WebrtcProvider('quill-demo-room', ydoc.current)
-
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const persistence = new IndexeddbPersistence('quill-demo-room', ydoc.current)
-
-    console.log(persistence)
+    provider.current = new WebrtcProvider('quill-demo-room', ydoc.current, {
+      signaling: ['wss://webrtc-prod-4g41jbon76fa9a29-1308252678.ap-shanghai.run.wxcloudrun.com'],
+    })
+    provider.current?.connect()
+    console.log(provider.current.connected)
     const awareness = provider.current.awareness
     awareness.on('change', () => {
       setUserList(
         Array.from(awareness.getStates().values()).map(
-          (state) => state.user.name
-        )
+          (state) => state.user?.name
+        ).filter(Boolean)
       )
     })
     const binding = new QuillBinding(
