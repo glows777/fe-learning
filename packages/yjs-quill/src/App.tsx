@@ -3,18 +3,19 @@ import QuillCursors from 'quill-cursors'
 
 import * as Y from 'yjs'
 import { QuillBinding } from 'y-quill'
-import { WebrtcProvider } from 'y-webrtc'
-// import { IndexeddbPersistence } from 'y-indexeddb'
+import { WebsocketProvider } from 'y-websocket'
 
 import React, { useEffect, useRef, useState } from 'react'
 
 function App() {
   const ydoc = useRef<Y.Doc | null>(null)
   const yText = useRef<Y.Text | null>(null)
-  const provider = useRef<WebrtcProvider | null>(null)
+  const provider = useRef<WebsocketProvider | null>(null)
   const quillRef = useRef<HTMLDivElement | null>(null)
   const [name, setName] = useState('')
-  const [userList, setUserList] = useState<string[]>([])
+  const [userList, setUserList] = useState<string[]>(() => 
+  provider?.current?.awareness ? Array.from(provider.current.awareness.states).map(s => s[1].user.name) : []
+  )
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
@@ -50,23 +51,29 @@ function App() {
     })
     ydoc.current = new Y.Doc()
     yText.current = ydoc.current.getText('quill')
-    provider.current = new WebrtcProvider('quill-demo-room', ydoc.current, {
-      signaling: ['wss://webrtc-prod-4g41jbon76fa9a29-1308252678.ap-shanghai.run.wxcloudrun.com'],
-    })
-    provider.current?.connect()
-    console.log(provider.current.connected)
+    const url = 'ws://localhost:1234'
+    provider.current = new WebsocketProvider(url, 'quill-demo-room', ydoc.current)
     const awareness = provider.current.awareness
+    awareness.setLocalStateField('user', {
+      // random name
+      name: 'user' + Math.floor(Math.random() * 100),
+      // a random color for the cursor
+      color:
+        '#' +
+        Math.floor(Math.random() * 0xffffff)
+          .toString(16)
+          .padStart(6, '0'),
+    })
     awareness.on('change', () => {
       setUserList(
-        Array.from(awareness.getStates().values()).map(
-          (state) => state.user?.name
-        ).filter(Boolean)
+        Array.from(awareness.states).map(
+          (state) => state[1]?.user?.name
+        )
       )
     })
     const binding = new QuillBinding(
       yText.current,
       quill,
-      // @ts-expect-error some weird type error
       awareness
     )
     return () => {
