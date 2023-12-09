@@ -9,7 +9,8 @@
     "ahooks": "pnpm -C ./packages/ahooks-fake dev",
     "rxjs": "pnpm -C ./packages/react-rxjs-demo dev",
     "slate": "pnpm -C ./packages/slate dev",
-    "yjs": "pnpm -C ./packages/yjs-quill dev"
+    "yjs": "pnpm -C ./packages/yjs-quill dev",
+    "wheels": "pnpm -C ./packages/react-wheels dev"
   },
   "keywords": [],
   "author": "",
